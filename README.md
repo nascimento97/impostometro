@@ -20,6 +20,7 @@ O **ImpostoMetro** é uma API REST desenvolvida em Django que oferece uma soluç
 ### Gestão de Despesas
 - 📊 Cadastro e listagem de despesas fixas
 - 📊 Cadastro e listagem de despesas variáveis
+- ✅ Cadastro e listagem de despesas variáveis
 - 🔗 Vinculação de despesas específicas por produto
 
 ### Gestão de Produtos
@@ -253,7 +254,7 @@ python manage.py runserver
 ## 📋 TODO / Roadmap
 
 - [ ] Implementar autenticação JWT
-- [ ] Criar models e migrações
+- [x] Criar models e migrações
 - [ ] Desenvolver endpoints de CRUD
 - [ ] Implementar lógica de cálculos
 - [ ] Adicionar testes unitários
@@ -262,6 +263,14 @@ python manage.py runserver
 - [ ] Otimizar consultas de banco
 - [ ] Adicionar validações de dados
 - [ ] Implementar logs de auditoria
+
+### Apps Implementados
+- [x] **usuarios** - Sistema de autenticação e usuários
+- [x] **despesafixa** - Gerenciamento de despesas fixas
+- [x] **despesavariavel** - Gerenciamento de despesas variáveis
+- [ ] **ingredientes** - Gestão de ingredientes
+- [ ] **produtos** - Gestão de produtos e composição
+- [ ] **analises** - Análises financeiras e relatórios
 
 ## 🤝 Contribuição
 
