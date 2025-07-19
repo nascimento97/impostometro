@@ -220,7 +220,18 @@ O **ImpostoMetro** é uma API REST desenvolvida em Django que oferece uma soluç
 - `GET /api/produto-despesas-variaveis/` - Listar despesas variáveis de produtos
 - `POST /api/produto-despesas-variaveis/` - Adicionar despesa variável ao produto
 
-### Análises
+### Análises Financeiras
+- `GET /api/analises-financeiras/` - Listar análises financeiras
+- `POST /api/analises-financeiras/` - Criar análise financeira
+- `GET /api/analises-financeiras/{id}/` - Detalhes da análise
+- `PUT /api/analises-financeiras/{id}/` - Atualizar análise
+- `DELETE /api/analises-financeiras/{id}/` - Deletar análise
+- `GET /api/analises-financeiras/stats/` - Estatísticas das análises
+- `POST /api/analises-financeiras/comparar/` - Comparar múltiplas análises
+- `POST /api/analises-financeiras/{id}/duplicar/` - Duplicar análise
+- `GET /api/analises-financeiras/{id}/relatorio/` - Relatório detalhado
+
+### Análises (Legado)
 - `POST /api/produtos/{id}/calcular/` - Calcular custos e lucros
 - `GET /api/produtos/{id}/analise/` - Obter análise financeira
 - `GET /api/produtos/{id}/exportar/` - Exportar relatório
@@ -282,7 +293,7 @@ python manage.py runserver
 - [x] **despesavariavel** - Gerenciamento de despesas variáveis
 - [x] **ingredientes** - Gestão de ingredientes
 - [x] **produtos** - Gestão de produtos e composição
-- [ ] **analises** - Análises financeiras e relatórios
+- [x] **analisefinanceira** - Análises financeiras e relatórios
 
 ## 🤝 Contribuição
 
