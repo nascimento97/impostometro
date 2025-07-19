@@ -258,6 +258,10 @@ venv\Scripts\activate  # Windows
 # Instalar dependências
 pip install -r requirements.txt
 
+# Configurar variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com suas configurações
+
 # Executar migrações
 python manage.py makemigrations
 python manage.py migrate
@@ -267,6 +271,49 @@ python manage.py createsuperuser
 
 # Executar servidor
 python manage.py runserver
+```
+
+## 🔐 Gerenciamento de Variáveis de Ambiente
+
+O projeto utiliza `django-environ` para gerenciar variáveis de ambiente de forma segura.
+
+### Configuração Inicial
+```bash
+# Copie o template de variáveis de ambiente
+cp .env.example .env
+
+# Edite o arquivo .env com suas configurações
+nano .env
+```
+
+### Scripts para SECRET_KEY
+
+O projeto inclui scripts automatizados para atualizar a SECRET_KEY:
+
+#### Script Python (Recomendado)
+```bash
+python update_secret_key.py
+```
+
+#### Script Bash (Alternativo)
+```bash
+./update_secret_key.sh
+```
+
+**Funcionalidades dos scripts:**
+- 🔐 Gera SECRET_KEY criptograficamente segura
+- 💾 Cria backup automático do arquivo .env
+- 🧪 Teste opcional após a atualização
+- ⚠️ Validações de segurança integradas
+
+> 📖 **Documentação completa:** Veja [SECRET_KEY_UPDATER.md](SECRET_KEY_UPDATER.md) e [DJANGO_ENVIRON_CONFIG.md](DJANGO_ENVIRON_CONFIG.md)
+
+### Variáveis de Ambiente Disponíveis
+- `SECRET_KEY` - Chave secreta do Django
+- `DEBUG` - Modo debug (True/False)
+- `ALLOWED_HOSTS` - Hosts permitidos (separados por vírgula)
+- `DATABASE_URL` - URL de conexão com o banco de dados
+- `CORS_ALLOWED_ORIGINS` - Origens permitidas para CORS
 ```
 
 ### Acesso

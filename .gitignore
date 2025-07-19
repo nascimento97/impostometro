@@ -5,3 +5,15 @@ __pycache__/
 *.pyd
 *.db
 db.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.example
+
+generate_secret_key.py
+update_secret_key.py
+update_secret_key.sh
+
+SECRET_KEY_UPDATER.md
