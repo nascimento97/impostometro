@@ -41,6 +41,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
@@ -59,6 +60,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -229,3 +231,31 @@ SWAGGER_SETTINGS = {
 REDOC_SETTINGS = {
     'LAZY_RENDERING': False,
 }
+
+# Configurações do CORS Headers
+# Permite requisições de páginas estáticas do GitHub Pages
+CORS_ALLOWED_ORIGINS = [
+    "https://nascimento97.github.io",
+]
+
+# Permite todos os métodos HTTP
+CORS_ALLOW_ALL_METHODS = True
+
+# Permite todos os headers necessários
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Permite credenciais (cookies, headers de autorização)
+CORS_ALLOW_CREDENTIALS = True
+
+# Configurações adicionais para HTTPS
+CORS_ALLOW_PRIVATE_NETWORK = True
