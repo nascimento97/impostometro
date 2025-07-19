@@ -5,6 +5,7 @@ from django.db.models import Q, Count, Sum, Avg
 from django_filters.rest_framework import DjangoFilterBackend
 from decimal import Decimal
 from .models import Produto, ProdutoIngrediente, ProdutoDespesaFixa, ProdutoDespesaVariavel
+from .filters import ProdutoFilter
 from .serializers import (
     ProdutoSerializer,
     ProdutoCreateSerializer,
@@ -38,7 +39,7 @@ class ProdutoViewSet(viewsets.ModelViewSet):
     
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['tempo_preparo', 'periodo_analise']
+    filterset_class = ProdutoFilter
     search_fields = ['nome', 'descricao']
     ordering_fields = ['nome', 'tempo_preparo', 'margem_lucro', 'created_at']
     ordering = ['-created_at']

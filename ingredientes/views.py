@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Ingrediente
+from .filters import IngredienteFilter
 from .serializers import (
     IngredienteSerializer,
     IngredienteCreateSerializer,
@@ -32,7 +33,7 @@ class IngredienteViewSet(viewsets.ModelViewSet):
     
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['unidade_medida', 'fornecedor']
+    filterset_class = IngredienteFilter
     search_fields = ['nome', 'fornecedor']
     ordering_fields = ['nome', 'preco_por_unidade', 'created_at']
     ordering = ['-created_at']

@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Q, Sum
 from .models import DespesaVariavel
+from .filters import DespesaVariavelFilter
 from .serializers import (
     DespesaVariavelSerializer,
     DespesaVariavelCreateSerializer,
@@ -34,7 +35,7 @@ class DespesaVariavelViewSet(viewsets.ModelViewSet):
     serializer_class = DespesaVariavelSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['ativa', 'unidade_medida', 'created_at']
+    filterset_class = DespesaVariavelFilter
     search_fields = ['nome', 'descricao', 'unidade_medida']
     ordering_fields = ['nome', 'valor_por_unidade', 'unidade_medida', 'created_at', 'updated_at']
     ordering = ['-created_at']

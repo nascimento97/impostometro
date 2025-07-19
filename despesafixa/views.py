@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Q
 from .models import DespesaFixa
+from .filters import DespesaFixaFilter
 from .serializers import (
     DespesaFixaSerializer,
     DespesaFixaCreateSerializer,
@@ -33,7 +34,7 @@ class DespesaFixaViewSet(viewsets.ModelViewSet):
     serializer_class = DespesaFixaSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['ativa', 'created_at']
+    filterset_class = DespesaFixaFilter
     search_fields = ['nome', 'descricao']
     ordering_fields = ['nome', 'valor', 'created_at', 'updated_at']
     ordering = ['-created_at']

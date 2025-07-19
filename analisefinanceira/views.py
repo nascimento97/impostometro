@@ -5,6 +5,7 @@ from django.db.models import Q, Count, Sum, Avg
 from django_filters.rest_framework import DjangoFilterBackend
 from decimal import Decimal
 from .models import AnaliseFinanceira
+from .filters import AnaliseFinanceiraFilter
 from .serializers import (
     AnaliseFinanceiraSerializer,
     AnaliseFinanceiraCreateSerializer,
@@ -34,13 +35,7 @@ class AnaliseFinanceiraViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     
     # Filtros disponíveis
-    filterset_fields = {
-        'produto': ['exact'],
-        'custo_total_producao': ['gte', 'lte'],
-        'preco_venda_sugerido': ['gte', 'lte'],
-        'lucro_previsto': ['gte', 'lte'],
-        'created_at': ['date__gte', 'date__lte', 'year', 'month']
-    }
+    filterset_class = AnaliseFinanceiraFilter
     
     # Campos de busca
     search_fields = ['produto__nome', 'produto__descricao']

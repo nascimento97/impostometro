@@ -4,9 +4,12 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import Usuario
+from .filters import UsuarioFilter
 from .serializers import (
     UsuarioSerializer, 
     UsuarioCreateSerializer, 
@@ -35,6 +38,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     """
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = UsuarioFilter
+    search_fields = ['username', 'first_name', 'last_name', 'email', 'nome_comercial']
+    ordering_fields = ['username', 'first_name', 'last_name', 'email', 'date_joined', 'last_login']
+    ordering = ['-date_joined']
 
     @swagger_auto_schema(
         operation_summary="Listar usuários",
@@ -109,27 +117,10 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Personaliza o queryset baseado no usuário autenticado.
+        Retorna o queryset padrão de usuários.
+        Os filtros são aplicados automaticamente pelo django-filters.
         """
-        queryset = Usuario.objects.all()
-        
-        # Filtro por busca
-        search = self.request.query_params.get('search', None)
-        if search:
-            queryset = queryset.filter(
-                Q(username__icontains=search) |
-                Q(email__icontains=search) |
-                Q(nome_comercial__icontains=search) |
-                Q(first_name__icontains=search) |
-                Q(last_name__icontains=search)
-            )
-        
-        # Filtro por status ativo
-        is_active = self.request.query_params.get('is_active', None)
-        if is_active is not None:
-            queryset = queryset.filter(is_active=is_active.lower() == 'true')
-        
-        return queryset
+        return Usuario.objects.all()
 
     @swagger_auto_schema(
         operation_summary="Criar novo usuário",
