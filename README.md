@@ -207,6 +207,18 @@ O **ImpostoMetro** é uma API REST desenvolvida em Django que oferece uma soluç
 - `GET /api/produtos/{id}/` - Detalhes do produto
 - `PUT /api/produtos/{id}/` - Atualizar produto
 - `DELETE /api/produtos/{id}/` - Deletar produto
+- `GET /api/produtos/search/` - Buscar produtos
+- `GET /api/produtos/stats/` - Estatísticas dos produtos
+- `POST /api/produtos/{id}/duplicar/` - Duplicar produto
+- `GET /api/produtos/{id}/calcular/` - Calcular custos e análise
+
+### Relacionamentos de Produtos
+- `GET /api/produto-ingredientes/` - Listar ingredientes de produtos
+- `POST /api/produto-ingredientes/` - Adicionar ingrediente ao produto
+- `GET /api/produto-despesas-fixas/` - Listar despesas fixas de produtos
+- `POST /api/produto-despesas-fixas/` - Adicionar despesa fixa ao produto
+- `GET /api/produto-despesas-variaveis/` - Listar despesas variáveis de produtos
+- `POST /api/produto-despesas-variaveis/` - Adicionar despesa variável ao produto
 
 ### Análises
 - `POST /api/produtos/{id}/calcular/` - Calcular custos e lucros
@@ -268,8 +280,8 @@ python manage.py runserver
 - [x] **usuarios** - Sistema de autenticação e usuários
 - [x] **despesafixa** - Gerenciamento de despesas fixas
 - [x] **despesavariavel** - Gerenciamento de despesas variáveis
-- [ ] **ingredientes** - Gestão de ingredientes
-- [ ] **produtos** - Gestão de produtos e composição
+- [x] **ingredientes** - Gestão de ingredientes
+- [x] **produtos** - Gestão de produtos e composição
 - [ ] **analises** - Análises financeiras e relatórios
 
 ## 🤝 Contribuição

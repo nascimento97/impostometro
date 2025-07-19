@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('despesafixa.urls')),
     path('', include('despesavariavel.urls')),
     path('', include('ingredientes.urls')),
+    path('', include('produtos.urls')),
     
     # JWT Authentication endpoints (alternativa aos endpoints customizados)
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
