@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from .models import Usuario
 from .serializers import (
     UsuarioSerializer, 
@@ -33,6 +35,49 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     """
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+
+    @swagger_auto_schema(
+        operation_summary="Listar usuários",
+        operation_description="""
+        Lista todos os usuários do sistema com paginação.
+        
+        Parâmetros de consulta opcionais:
+        - search: Busca por nome, username ou email
+        - is_active: Filtrar por usuários ativos (true/false)
+        """,
+        manual_parameters=[
+            openapi.Parameter(
+                'search',
+                openapi.IN_QUERY,
+                description="Buscar por nome, username ou email",
+                type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'is_active',
+                openapi.IN_QUERY,
+                description="Filtrar por usuários ativos",
+                type=openapi.TYPE_BOOLEAN
+            ),
+        ],
+        responses={
+            200: UsuarioListSerializer(many=True),
+            401: openapi.Response(description="Autenticação necessária"),
+        }
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_summary="Detalhes do usuário",
+        operation_description="Retorna os detalhes completos de um usuário específico.",
+        responses={
+            200: UsuarioSerializer,
+            401: openapi.Response(description="Autenticação necessária"),
+            404: openapi.Response(description="Usuário não encontrado"),
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
     def get_permissions(self):
         """
@@ -86,6 +131,36 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         
         return queryset
 
+    @swagger_auto_schema(
+        operation_summary="Criar novo usuário",
+        operation_description="""
+        Cria um novo usuário no sistema.
+        
+        Após a criação bem-sucedida, retorna automaticamente tokens JWT 
+        para que o usuário possa fazer login imediatamente.
+        """,
+        request_body=UsuarioCreateSerializer,
+        responses={
+            201: openapi.Response(
+                description="Usuário criado com sucesso",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING),
+                        'usuario': openapi.Schema(type=openapi.TYPE_OBJECT),
+                        'tokens': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'access': openapi.Schema(type=openapi.TYPE_STRING),
+                                'refresh': openapi.Schema(type=openapi.TYPE_STRING),
+                            }
+                        ),
+                    }
+                )
+            ),
+            400: openapi.Response(description="Dados inválidos fornecidos"),
+        }
+    )
     def create(self, request, *args, **kwargs):
         """
         Cria um novo usuário.
@@ -133,6 +208,51 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'message': 'Usuário desativado com sucesso!'
         }, status=status.HTTP_204_NO_CONTENT)
 
+    @swagger_auto_schema(
+        method='post',
+        operation_summary="Login de usuário",
+        operation_description="""
+        Realiza o login do usuário no sistema.
+        
+        Aceita login por username ou email.
+        Retorna tokens JWT para autenticação nas próximas requisições.
+        """,
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['username', 'password'],
+            properties={
+                'username': openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description='Username ou email do usuário'
+                ),
+                'password': openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description='Senha do usuário'
+                ),
+            },
+        ),
+        responses={
+            200: openapi.Response(
+                description="Login realizado com sucesso",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING),
+                        'usuario': openapi.Schema(type=openapi.TYPE_OBJECT),
+                        'tokens': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'access': openapi.Schema(type=openapi.TYPE_STRING),
+                                'refresh': openapi.Schema(type=openapi.TYPE_STRING),
+                            }
+                        ),
+                    }
+                )
+            ),
+            400: openapi.Response(description="Dados obrigatórios não fornecidos"),
+            401: openapi.Response(description="Credenciais inválidas"),
+        }
+    )
     @action(detail=False, methods=['post'])
     def login(self, request):
         """
@@ -201,6 +321,15 @@ class UsuarioViewSet(viewsets.ModelViewSet):
                 'error': 'Token inválido.'
             }, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="Dados do usuário autenticado",
+        operation_description="Retorna os dados completos do usuário atualmente autenticado.",
+        responses={
+            200: UsuarioSerializer,
+            401: openapi.Response(description="Token de autenticação não fornecido ou inválido"),
+        }
+    )
     @action(detail=False, methods=['get'])
     def me(self, request):
         """
